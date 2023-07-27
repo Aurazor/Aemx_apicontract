@@ -1,0 +1,84 @@
+openapi: "3.0.2"
+info:
+  title: API Person
+  version: "1.0"
+tags:
+  - name: Person
+    description: Person specific data
+paths:
+  /person:
+    get:
+      tags:
+        - Person
+      summary: Create Person
+      operationId: createPerson
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonDetails'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDetailsFull'
+
+    post:
+      tags:
+        - Person
+      summary: Get All Persons
+      operationId: getAllPersons
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonDetailsFull'
+
+  /person/{personId}:
+    get:
+      tags:
+        - Person
+      summary: Retrieve Person
+      operationId: getPersonById
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDetailsFull'
+        '404':
+          description: NOT FOUND
+components:
+  schemas:
+    PersonDetails:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: First name of the person
+        lastName:
+          type: string
+          description: Last name of the person
+    PersonDetailsFull:
+      allOf:
+        - $ref: '#/components/schemas/PersonDetails'
+        - type: object
+          properties:
+            id:
+              type: object
+              description: The ID of the person
+      description: Full data of the person.
