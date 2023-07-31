@@ -1,0 +1,93 @@
+openapi: 3.0.2
+info:
+  title: API Person
+  version: "1.0"
+servers:
+- url: /
+tags:
+- description: Person specific data
+  name: Person
+paths:
+  /person:
+    get:
+      operationId: getAllPersons
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/PersonDetailsFull'
+                type: array
+          description: OK
+      summary: Get All Persons
+      tags:
+      - Person
+    post:
+      operationId: createPerson
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonDetails'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDetailsFull'
+          description: OK
+      summary: Create Person
+      tags:
+      - Person
+  /person/{personId}:
+    get:
+      operationId: getPersonById
+      parameters:
+      - explode: false
+        in: path
+        name: personId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDetailsFull'
+          description: OK
+        "404":
+          description: NOT FOUND
+      summary: Retrieve Person
+      tags:
+      - Person
+components:
+  schemas:
+    PersonDetails:
+      example:
+        firstName: firstName
+        lastName: lastName
+      properties:
+        firstName:
+          description: First name of the person
+          type: string
+        lastName:
+          description: Last name of the person
+          type: string
+      type: object
+    PersonDetailsFull:
+      allOf:
+      - $ref: '#/components/schemas/PersonDetails'
+      - $ref: '#/components/schemas/PersonDetailsFull_allOf'
+      description: Full data of the person.
+    PersonDetailsFull_allOf:
+      properties:
+        id:
+          description: The ID of the person
+          format: ObjectId
+          type: string
+      type: object
+      example: null

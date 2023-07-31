@@ -70,7 +70,16 @@
       <artifactId>javax.annotation-api</artifactId>
       <version>1.3.2</version>
     </dependency>
-
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-mongodb-panache</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>RELEASE</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -151,22 +160,39 @@
               <goal>generate</goal>
             </goals>
             <configuration>
+              <!--  <configHelp>false</configHelp>
+                <configOptions>
+                  <useJakartaEe>true</useJakartaEe>
+                  <interfaceOnly>false</interfaceOnly>
+                  <dateLibrary>java8</dateLibrary>
+                </configOptions>
+                <inputSpec>
+                  ${project.basedir}/src/api.yaml
+                </inputSpec>-->
+<!--                <generatorName>java</generatorName>-->
+<!--                <apiPackage>com.nikhilaukhaj.apicontract.api</apiPackage>-->
+<!--                <modelPackage>com.nikhilaukhaj.apicontract.model</modelPackage>-->
               <inputSpec>${project.basedir}/src/api.yaml</inputSpec>
               <generatorName>jaxrs-spec</generatorName>
+              <templateDirectory>${project.basedir}/custom-templates</templateDirectory>
               <configOptions>
-                <dateLibrary>java11</dateLibrary>
                 <useSwaggerAnnotations>false</useSwaggerAnnotations>
                 <!--ensure we only generate java interfaces and no implementation skeleton-->
-                <interfaceOnly>false</interfaceOnly>
+                <interfaceOnly>true</interfaceOnly>
+                <returnResponse>true</returnResponse>
+                <dateLibrary>java8</dateLibrary>
+                <useMicroProfileOpenAPIAnnotations>true</useMicroProfileOpenAPIAnnotations>
+                <parentOverriden>false</parentOverriden>
               </configOptions>
-              <apiPackage>com.nikhilaukhaj.aemx.api</apiPackage>
-              <modelPackage>com.nikhilaukhaj.aemx.model</modelPackage>
+              <apiPackage>com.nikhilaukhaj.apicontract.api</apiPackage>
+              <modelPackage>com.nikhilaukhaj.apicontract.model</modelPackage>
               <generateModelTests>false</generateModelTests>
               <generateModelDocumentation>true</generateModelDocumentation>
               <generateSupportingFiles>false</generateSupportingFiles>
               <generateApiTests>false</generateApiTests>
               <generateApiDocumentation>true</generateApiDocumentation>
               <skipValidateSpec>true</skipValidateSpec>
+
               <auth>false</auth>
             </configuration>
           </execution>

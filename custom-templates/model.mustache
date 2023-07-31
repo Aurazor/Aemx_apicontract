@@ -1,0 +1,26 @@
+package {{package}};
+
+import io.quarkus.mongodb.panache.common.MongoEntity;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
+
+{{#models}}
+{{#model}}
+{{^isEnum}}
+@MongoEntity(collection = "{{classname}}")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class {{classname}} {
+{{#vars}}
+public {{datatype}} {{name}};
+{{/vars}}
+}
+{{/isEnum}}
+{{/model}}
+{{/models}}
